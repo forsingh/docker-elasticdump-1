@@ -2,7 +2,7 @@ Docker elastic-dump
 ===================
 
 Lightweight Docker container with [elasticsearch-dump](https://github.com/taskrabbit/elasticsearch-dump).
-It is based on Alpine OS and occupies only ~28MB.
+It is based on Alpine OS and occupies only ~32MB.
 
 Usage
 -----
@@ -14,7 +14,7 @@ elastic-dump is the entry point and expects parameters to be passed as Docker co
 To export and zip an entire LogStash index (change MY_DOMAIN):
 
 ```bash
-sudo docker run --rm vfarcic/elasticdump \
+sudo docker run --rm walm/elasticdump \
     --input=http://MY_DOMAIN:9200/logstash-* \
     --output=$ \
     --type=data | gzip >es-logstash.gzip
@@ -23,7 +23,7 @@ sudo docker run --rm vfarcic/elasticdump \
 To export Kibana configuration (change MY_DOMAIN):
 
 ```bash
-sudo docker run --rm vfarcic/elasticdump \
+sudo docker run --rm walm/elasticdump \
     --input=http://MY_DOMAIN:9200/.kibana \
     --output=$ \
     --type=data >es-kibana.json
@@ -36,7 +36,7 @@ To import LogStash index (change MY_DOMAIN):
 ```bash
 sudo docker run --rm \
     -v $PWD:/data \
-    vfarcic/elasticdump \
+    walm/elasticdump \
     --input=/data/es-logstash.json \
     --output=http://MY_DOMAIN:9200/.kibana \
     --type=data
@@ -47,8 +47,13 @@ To import Kibana configuration (change MY_DOMAIN):
 ```bash
 sudo docker run --rm \
     -v $PWD:/data \
-    vfarcic/elasticdump \
+    walm/elasticdump \
     --input=/data/es-kibana.json \
     --output=http://MY_DOMAIN:9200/.kibana \
     --type=data
 ```
+
+Credits
+-------
+
+This is a fork of [vfarcic/docker-elasticdump](https://github.com/vfarcic/docker-elasticdump)
