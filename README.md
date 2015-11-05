@@ -11,20 +11,29 @@ elastic-dump is the entry point and expects parameters to be passed as Docker co
 
 ### Export
 
-To export and zip an entire LogStash index (change MY_DOMAIN):
+To export and zip an entire LogStash index (change ES_IP):
 
 ```bash
 sudo docker run --rm walm/elasticdump \
-    --input=http://MY_DOMAIN:9200/logstash-* \
+    --input=http://ES_IP:9200/logstash-* \
     --output=$ \
     --type=data | gzip >es-logstash.gzip
 ```
 
-To export Kibana configuration (change MY_DOMAIN):
+To export Kibana configuration (change ES_IP):
 
 ```bash
 sudo docker run --rm walm/elasticdump \
-    --input=http://MY_DOMAIN:9200/.kibana \
+    --input=http://ES_IP:9200/kibana-int \
+    --output=$ \
+    --type=data >es-kibana.json
+```
+
+Using docker link
+
+```bash
+sudo docker run --rm --link="es:es" walm/elasticdump \
+    --input=http://es:9200/kibana-int \
     --output=$ \
     --type=data >es-kibana.json
 ```
@@ -37,8 +46,8 @@ To import LogStash index (change MY_DOMAIN):
 sudo docker run --rm \
     -v $PWD:/data \
     walm/elasticdump \
-    --input=/data/es-logstash.json \
-    --output=http://MY_DOMAIN:9200/.kibana \
+    --input=/data/es-logstash-20151105.json \
+    --output=http://MY_DOMAIN:9200/logstash-2015.11.05 \
     --type=data
 ```
 
@@ -49,7 +58,7 @@ sudo docker run --rm \
     -v $PWD:/data \
     walm/elasticdump \
     --input=/data/es-kibana.json \
-    --output=http://MY_DOMAIN:9200/.kibana \
+    --output=http://MY_DOMAIN:9200/kibana-int \
     --type=data
 ```
 
